@@ -1,0 +1,71 @@
+<div [ngSwitch]="labelsMenuView" class="views" (click)="$event.stopPropagation()">
+
+    <div class="view " *ngSwitchCase="'labels'" [@slideInLeft] fxFlex fxLayout="column">
+
+        <div class="header mb-12 pb-4 px-8" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>Labels</div>
+            <button mat-button (click)="labelsMenuView ='add'">
+                <mat-icon class="s-16">add</mat-icon>
+                <span>Add</span>
+            </button>
+        </div>
+
+        <div fxFlex fxLayout="column" fusePerfectScrollbar>
+
+            <div class="label pl-12 mx-8 mb-8" *ngFor="let label of board.labels" fxFlex="0 0 auto" fxLayout="row" fxFlexAlign="space-between center"
+                 [ngClass]="label.color">
+
+                <mat-checkbox fxFlex fxLayout="row" fxLayoutAlign="start center" [checked]="card.idLabels.indexOf(label.id) > -1"
+                              (change)="toggleInArray(label.id, card.idLabels);cardLabelsChanged()">
+                    {{label.name}}
+                </mat-checkbox>
+
+                <button mat-icon-button>
+                    <mat-icon class="s-16" (click)="labelsMenuView ='edit';selectedLabel = label">mode_edit</mat-icon>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <div class="view px-8" *ngSwitchCase="'edit'" [@slideInRight] fxFlex fxLayout="column">
+
+        <div class="header mb-12 pb-4" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>Edit Label</div>
+            <button mat-icon-button (click)="labelsMenuView ='labels'">
+                <mat-icon class="s-16">arrow_back</mat-icon>
+            </button>
+        </div>
+
+        <div fxLayout="row" fxLayoutAlign="space-between center">
+            <mat-form-field>
+                <input matInput placeholder="Name" [(ngModel)]="selectedLabel.name" (change)="onLabelChange()">
+            </mat-form-field>
+
+            <fuse-material-color-picker [(selectedClass)]="selectedLabel.color" class="ml-8" (change)="$event.preventDefault;onLabelChange()"></fuse-material-color-picker>
+        </div>
+
+    </div>
+
+    <div class="view px-8" *ngSwitchCase="'add'" [@slideInRight] fxFlex fxLayout="column">
+
+        <div class="header mb-12 pb-4" fxLayout="row" fxLayoutAlign="space-between center">
+            <div>Add Label</div>
+            <button mat-icon-button (click)="labelsMenuView ='labels'">
+                <mat-icon class="s-16">arrow_back</mat-icon>
+            </button>
+        </div>
+
+        <form (submit)="addNewLabel()" #newLabelForm="ngForm" fxFlex fxLayout="column" fxLayoutAlign="start end">
+
+            <div class="w-100-p" fxFlex="0 1 auto" fxLayout="row" fxLayoutAlign="space-between center">
+                <mat-form-field fxFlex>
+                    <input matInput placeholder="Name" [(ngModel)]="newLabel.name" name="labelName" required>
+                </mat-form-field>
+
+                <fuse-material-color-picker [(selectedClass)]="newLabel.color" name="labelColor" class="ml-8"></fuse-material-color-picker>
+            </div>
+
+            <button mat-raised-button class="mat-accent mt-16" [disabled]="!newLabelForm.valid">Add</button>
+        </form>
+    </div>
+</div>
