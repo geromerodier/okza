@@ -1,6 +1,6 @@
 # Fuse2
 
-J'aime le sexe BB!
+J'aime le sexe BB! ;)
 
 Material Design Admin Template with Angular 5+ and Angular Material 2
 
